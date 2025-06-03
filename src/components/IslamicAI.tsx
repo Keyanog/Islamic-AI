@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { keyframes } from '@emotion/react';
 import LanguageDetect from 'languagedetect';
@@ -30,7 +30,7 @@ interface LanguageConfig {
 }
 
 // Use Record instead of mapped type
-type LanguageConfigs = Record<SupportedLanguage, LanguageConfig>;
+// type LanguageConfigs = Record<SupportedLanguage, LanguageConfig>;
 
 // Add Theme interface
 interface Theme {
@@ -48,32 +48,32 @@ interface Theme {
 
 // Update theme object with proper typing
 const theme = {
-  primary: 'var(--primary)',
-  secondary: 'var(--secondary)',
-  success: 'var(--success)',
-  background: 'var(--background)',
-  text: 'var(--text)',
-  textLight: 'var(--text-light)',
-  border: 'var(--border)',
-  white: 'var(--white)',
-  shadow: 'var(--shadow)',
-  shadowLg: 'var(--shadow-lg)',
+  primary: '#10a37f',
+  secondary: '#0e906f',
+  success: '#22c55e',
+  background: '#202123',
+  text: '#ECECF1',
+  textLight: '#9FA6B3',
+  border: '#4E4F60',
+  white: '#FFFFFF',
+  shadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+  shadowLg: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
 } as const;
 
 // Update ThemeProvider with CSS variables
 const ThemeProvider = styled.div`
-  --primary: #10a37f;
-  --primary-20: rgba(16, 163, 127, 0.1);
-  --secondary: #0e906f;
-  --success: #22c55e;
-  --background: #202123;
+  --primary: ${theme.primary};
+  --primary-20: ${theme.primary}20;
+  --secondary: ${theme.secondary};
+  --success: ${theme.success};
+  --background: ${theme.background};
   --background-light: rgba(255, 255, 255, 0.05);
-  --text: #ECECF1;
-  --text-light: #9FA6B3;
-  --border: #4E4F60;
-  --white: #FFFFFF;
-  --shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-lg: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --text: ${theme.text};
+  --text-light: ${theme.textLight};
+  --border: ${theme.border};
+  --white: ${theme.white};
+  --shadow: ${theme.shadow};
+  --shadow-lg: ${theme.shadowLg};
 `;
 
 // Add media breakpoints
@@ -419,34 +419,7 @@ const formatMessageContent = (text: string, language: string = 'english') => {
 };
 
 // Add CSS for verse blocks
-const GlobalStyle = styled.div`
-  .verse-block {
-    background: rgba(16, 163, 127, 0.08);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin: 1rem 0;
-    position: relative;
-    
-    &::before {
-      content: '۞';
-      position: absolute;
-      top: -0.75rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.5rem;
-      color: rgba(16, 163, 127, 0.5);
-      background: var(--background);
-      padding: 0 0.5rem;
-    }
-  }
-
-  .verse-content {
-    font-family: 'Amiri', 'Traditional Arabic', serif;
-    font-size: 1.25rem;
-    line-height: 2;
-    color: var(--text);
-  }
-`;
+// const GlobalStyle = styled.div`...`;
 
 // Move MessageComponent after all its dependencies are defined
 const MessageComponent = ({ message }: { message: Message }) => {
@@ -489,179 +462,21 @@ const AIIcon = () => (
 );
 
 // Consolidate ArabicText styled component
-const ArabicText = styled.div<{ isQuran?: boolean }>`
-  font-family: 'Amiri', 'Traditional Arabic', serif;
-  font-size: ${props => props.isQuran ? '1.5rem' : '1.25rem'};
-  line-height: 2;
-  text-align: right;
-  direction: rtl;
-  margin: ${props => props.isQuran ? '1rem 0' : '0.5rem 0'};
-  color: ${props => props.isQuran ? '#FFFFFF' : 'rgba(255, 255, 255, 0.9)'};
-`;
+// const ArabicText = styled.div`...`;
 
-const Translation = styled.div`
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0.5rem 0;
-  padding-top: 0.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-`;
-
-const Reference = styled.div`
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
-  text-align: right;
-  margin-top: 0.5rem;
-  font-style: italic;
-`;
-
-const HadithBlock = styled.div`
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 1.25rem;
-  margin: 1rem 0;
-  border-left: 4px solid rgba(16, 163, 127, 0.5);
-`;
-
-const Narrator = styled.div`
-  font-weight: 500;
-  color: rgba(16, 163, 127, 0.9);
-  margin-bottom: 0.5rem;
-`;
-
-const InputContainer = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1rem;
-  background: transparent;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  z-index: 100;
-  pointer-events: none; // Allow clicks to pass through the container
-
-  @media (max-width: ${breakpoints.mobile}) {
-    padding: 0.75rem;
-  }
-`;
-
-const InputWrapper = styled.div`
-  width: 100%;
-  max-width: 768px;
-  position: relative;
-  padding: 0 1rem;
-  pointer-events: auto; // Re-enable clicks for the input area
-
-  @media (max-width: ${breakpoints.mobile}) {
-    padding: 0 0.5rem;
-  }
-`;
-
-const Input = styled.textarea`
-  width: 100%;
-  padding: 1rem 3.5rem 1rem 1.25rem;
-  background: rgba(32, 33, 35, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  color: #ECECF1;
-  font-size: 0.975rem;
-  resize: none;
-  min-height: 60px;
-  max-height: 150px;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  
-  &:focus {
-    outline: none;
-    border-color: rgba(16, 163, 127, 0.5);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2),
-                0 0 0 2px rgba(16, 163, 127, 0.2);
-    background: rgba(32, 33, 35, 0.7);
-  }
-  
-  &::placeholder {
-    color: rgba(255, 255, 255, 0.4);
-  }
-
-  &:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-
-  @media (max-width: ${breakpoints.mobile}) {
-    padding: 0.875rem 3rem 0.875rem 1rem;
-    font-size: 0.9rem;
-    min-height: 50px;
-  }
-`;
-
-const SendButton = styled.button<{ isLoading?: boolean }>`
-  position: absolute;
-  right: 1.5rem;
-  bottom: 50%;
-  transform: translateY(50%);
-  background-color: ${props => props.isLoading ? 'transparent' : 'var(--primary)'};
-  border: none;
-  color: var(--white);
-  cursor: ${props => props.isLoading ? 'not-allowed' : 'pointer'};
-  padding: 0.75rem;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(5px);
-  
-  &:hover:not(:disabled) {
-    background-color: var(--secondary);
-    transform: translateY(50%) scale(1.05);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  }
-
-  &:disabled {
-    opacity: 0.7;
-  }
-
-  svg {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-
-  @media (max-width: ${breakpoints.mobile}) {
-    right: 1.25rem;
-    padding: 0.625rem;
-  }
-`;
-
-// Add loading animation
-const spin = keyframes`
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-`;
-
-const LoadingSpinner = styled.div`
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: #FFFFFF;
-  animation: ${spin} 0.8s linear infinite;
-`;
-
-// Update SendIcon component
-const SendIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="22" y1="2" x2="11" y2="13" />
-    <polygon points="22 2 15 22 11 13 2 9 22 2" />
-  </svg>
-);
+// const Translation = styled.div`...`;
+// const Reference = styled.div`...`;
+// const HadithBlock = styled.div`...`;
+// const Narrator = styled.div`...`;
+// const InputContainer = styled.div`...`;
+// const InputWrapper = styled.div`...`;
+// const Input = styled.textarea`...`;
+// const SendButton = styled.button`...`;
+// const LoadingSpinner = styled.div`...`;
+// const SendIcon = () => (...);
 
 // Update language config usage
-const getSystemPromptForLanguage = (language: string, config: LanguageConfig) => {
+const getSystemPromptForLanguage = (language: string) => {
   const prompts: Record<SupportedLanguage, string> = {
     english: `You are a highly precise and respectful Islamic knowledge assistant. Respond in English with beautifully formatted answers. Follow these guidelines:
 
@@ -800,78 +615,7 @@ const getWelcomeMessage = (language: string) => {
 };
 
 // Add new styled components for better message formatting
-const MessageBlock = styled.div<{ isRTL?: boolean }>`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  text-align: ${props => props.isRTL ? 'right' : 'left'};
-  direction: ${props => props.isRTL ? 'rtl' : 'ltr'};
-`;
-
-const VerseBlock = styled.div<{ isRTL?: boolean }>`
-  margin: 1.5rem 0;
-  padding: 1.5rem;
-  background: rgba(16, 163, 127, 0.08);
-  border-radius: 12px;
-  position: relative;
-  
-  &::before {
-    content: '۞';
-    position: absolute;
-    top: -0.75rem;
-    ${props => props.isRTL ? 'right' : 'left'}: 50%;
-    transform: translateX(${props => props.isRTL ? '50%' : '-50%'});
-    font-size: 1.5rem;
-    color: rgba(16, 163, 127, 0.5);
-    background: var(--background);
-    padding: 0 0.5rem;
-  }
-`;
-
-const TranslationText = styled.div<{ isRTL?: boolean }>`
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin: 0.75rem 0;
-  padding-top: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: ${props => props.isRTL ? 'right' : 'left'};
-  direction: ${props => props.isRTL ? 'rtl' : 'ltr'};
-`;
-
-const ReferenceText = styled.div<{ isRTL?: boolean }>`
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.6);
-  margin-top: 0.5rem;
-  text-align: ${props => props.isRTL ? 'right' : 'left'};
-  font-style: italic;
-`;
-
-const ListContainer = styled.ul<{ isRTL?: boolean }>`
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0;
-  text-align: ${props => props.isRTL ? 'right' : 'left'};
-  direction: ${props => props.isRTL ? 'rtl' : 'ltr'};
-`;
-
-const ListItem = styled.li<{ isRTL?: boolean }>`
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  margin: 0.75rem 0;
-  padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  flex-direction: ${props => props.isRTL ? 'row-reverse' : 'row'};
-
-  &::before {
-    content: '•';
-    color: rgba(16, 163, 127, 0.9);
-    font-size: 1.5rem;
-    line-height: 1;
-    margin-top: -0.25rem;
-  }
-`;
+// const MessageBlock = styled.div`...`;
 
 // Add content components
 const ContentSection = styled.div`
@@ -936,7 +680,7 @@ const OverviewContent = () => (
       Overview
     </ContentTitle>
     <ContentText>
-      Islamic AI is an advanced artificial intelligence assistant designed to provide accurate and authentic Islamic information. It combines modern technology with traditional Islamic knowledge to help users learn about Islam from reliable sources.
+      Islamic AI is an advanced artificial intelligence assistant designed to provide accurate and authentic Islamic information.
     </ContentText>
     <ContentList>
       <ContentListItem>
@@ -949,168 +693,35 @@ const OverviewContent = () => (
           <p>All information is derived from the Quran, authentic Hadith, and recognized scholarly works.</p>
         </div>
       </ContentListItem>
-      <ContentListItem>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 20V10" />
-          <path d="M18 20V4" />
-          <path d="M6 20v-4" />
-        </svg>
-        <div>
-          <strong>Multilingual Support</strong>
-          <p>Supports Arabic, English, Urdu, and other languages with proper RTL handling.</p>
-        </div>
-      </ContentListItem>
     </ContentList>
   </ContentSection>
 );
 
 const GettingStartedContent = () => (
   <ContentSection>
-    <ContentTitle>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-        <path d="M16 17L21 12L16 7" />
-        <path d="M21 12H9" />
-      </svg>
-      Getting Started
-    </ContentTitle>
-    <ContentText>
-      Welcome to Islamic AI! Here's how to get the most out of your experience:
-    </ContentText>
-    <ContentList>
-      <ContentListItem>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" y1="16" x2="12" y2="12" />
-          <line x1="12" y1="8" x2="12.01" y2="8" />
-        </svg>
-        <div>
-          <strong>Ask Questions</strong>
-          <p>Type your questions about Islam in any supported language. The AI will detect the language automatically.</p>
-        </div>
-      </ContentListItem>
-      <ContentListItem>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-        </svg>
-        <div>
-          <strong>View Sources</strong>
-          <p>Each answer includes references to authentic sources with proper citations.</p>
-        </div>
-      </ContentListItem>
-    </ContentList>
+    <ContentTitle>Getting Started</ContentTitle>
+    <ContentText>Welcome to Islamic AI!</ContentText>
   </ContentSection>
 );
 
 const LanguageSupportContent = () => (
   <ContentSection>
-    <ContentTitle>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M12 20V10" />
-        <path d="M18 20V4" />
-        <path d="M6 20v-4" />
-      </svg>
-      Language Support
-    </ContentTitle>
-    <ContentText>
-      Islamic AI supports multiple languages with proper formatting and cultural considerations:
-    </ContentText>
-    <ContentList>
-      <ContentListItem>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-        </svg>
-        <div>
-          <strong>Arabic</strong>
-          <p>Full RTL support with proper Arabic font and formatting.</p>
-        </div>
-      </ContentListItem>
-      <ContentListItem>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-        </svg>
-        <div>
-          <strong>Urdu</strong>
-          <p>Nastaliq font support with proper RTL handling.</p>
-        </div>
-      </ContentListItem>
-    </ContentList>
+    <ContentTitle>Language Support</ContentTitle>
+    <ContentText>Islamic AI supports multiple languages.</ContentText>
   </ContentSection>
 );
 
 const SourcesContent = () => (
   <ContentSection>
-    <ContentTitle>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <rect x="3" y="3" width="18" height="18" rx="2" />
-        <path d="M3 9h18" />
-      </svg>
-      Sources & Citations
-    </ContentTitle>
-    <ContentText>
-      All information provided by Islamic AI comes from authentic Islamic sources:
-    </ContentText>
-    <ContentList>
-      <ContentListItem>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-        </svg>
-        <div>
-          <strong>Quran</strong>
-          <p>Verses are cited with Surah name, number, and Ayah number.</p>
-        </div>
-      </ContentListItem>
-      <ContentListItem>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20" />
-        </svg>
-        <div>
-          <strong>Hadith</strong>
-          <p>Citations from authenticated collections with complete references.</p>
-        </div>
-      </ContentListItem>
-    </ContentList>
+    <ContentTitle>Sources & Citations</ContentTitle>
+    <ContentText>All information comes from authentic sources.</ContentText>
   </ContentSection>
 );
 
 const GuidelinesContent = () => (
   <ContentSection>
-    <ContentTitle>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 16v-4" />
-        <path d="M12 8h.01" />
-      </svg>
-      Guidelines
-    </ContentTitle>
-    <ContentText>
-      Islamic AI follows strict guidelines to ensure accurate and respectful information:
-    </ContentText>
-    <ContentList>
-      <ContentListItem>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-          <polyline points="22 4 12 14.01 9 11.01" />
-        </svg>
-        <div>
-          <strong>Authenticity</strong>
-          <p>Only verified information from recognized sources is provided.</p>
-        </div>
-      </ContentListItem>
-      <ContentListItem>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 16v-4" />
-          <path d="M12 8h.01" />
-        </svg>
-        <div>
-          <strong>Scholarly Referral</strong>
-          <p>Complex issues are referred to qualified Islamic scholars.</p>
-        </div>
-      </ContentListItem>
-    </ContentList>
+    <ContentTitle>Guidelines</ContentTitle>
+    <ContentText>Islamic AI follows strict guidelines.</ContentText>
   </ContentSection>
 );
 
@@ -1495,6 +1106,135 @@ const ContentContainer = styled.div`
   padding: 1rem;
 `;
 
+// Add loading animation
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+const InputContainer = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  z-index: 100;
+  pointer-events: none;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    padding: 0.75rem;
+  }
+`;
+
+const InputWrapper = styled.div`
+  width: 100%;
+  max-width: 768px;
+  position: relative;
+  padding: 0 1rem;
+  pointer-events: auto;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    padding: 0 0.5rem;
+  }
+`;
+
+const Input = styled.textarea`
+  width: 100%;
+  padding: 1rem 3.5rem 1rem 1.25rem;
+  background: rgba(32, 33, 35, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  color: #ECECF1;
+  font-size: 0.975rem;
+  resize: none;
+  min-height: 60px;
+  max-height: 150px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  
+  &:focus {
+    outline: none;
+    border-color: rgba(16, 163, 127, 0.5);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2),
+                0 0 0 2px rgba(16, 163, 127, 0.2);
+    background: rgba(32, 33, 35, 0.7);
+  }
+  
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: ${breakpoints.mobile}) {
+    padding: 0.875rem 3rem 0.875rem 1rem;
+    font-size: 0.9rem;
+    min-height: 50px;
+  }
+`;
+
+const SendButton = styled.button<{ isLoading?: boolean }>`
+  position: absolute;
+  right: 1.5rem;
+  bottom: 50%;
+  transform: translateY(50%);
+  background-color: ${props => props.isLoading ? 'transparent' : 'var(--primary)'};
+  border: none;
+  color: var(--white);
+  cursor: ${props => props.isLoading ? 'not-allowed' : 'pointer'};
+  padding: 0.75rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(5px);
+  
+  &:hover:not(:disabled) {
+    background-color: var(--secondary);
+    transform: translateY(50%) scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+  }
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  @media (max-width: ${breakpoints.mobile}) {
+    right: 1.25rem;
+    padding: 0.625rem;
+  }
+`;
+
+const LoadingSpinner = styled.div`
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #FFFFFF;
+  animation: ${spin} 0.8s linear infinite;
+`;
+
+const SendIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="22" y1="2" x2="11" y2="13" />
+    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+  </svg>
+);
+
 const IslamicAI = () => {
   const [messages, setMessages] = useState<Message[]>([{
     text: getWelcomeMessage('english'),
@@ -1503,7 +1243,6 @@ const IslamicAI = () => {
   }]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [activeSection, setActiveSection] = useState('overview');
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -1524,38 +1263,15 @@ const IslamicAI = () => {
     textarea.style.height = `${Math.min(textarea.scrollHeight, 150)}px`;
   };
 
-  const detectLanguage = (text: string) => {
-    // Enhanced language detection with support for all languages
-    const arabic = /[\u0600-\u06FF]/;
-    const urdu = /[\u0600-\u06FF\u0750-\u077F]/;
-    const persian = /[\u0600-\u06FF\uFB50-\uFB9F]/;
-    const turkish = /[ğĞıİöÖşŞüÜçÇ]/;
-    const indonesian = /^[a-zA-Z\s]*$/;
-
-    // First check for scripts that can be detected by character sets
-    if (arabic.test(text) && !urdu.test(text) && !persian.test(text)) return 'arabic';
-    if (urdu.test(text)) return 'urdu';
-    if (persian.test(text)) return 'persian';
-    if (turkish.test(text)) return 'turkish';
-
-    // Use language detector for other languages
-    const detected = lngDetector.detect(text, 1);
-    if (detected.length > 0) {
-      const [lang, confidence] = detected[0];
-      const languageMap: { [key: string]: string } = {
-        'en': 'english',
-        'ar': 'arabic',
-        'ur': 'urdu',
-        'fa': 'persian',
-        'tr': 'turkish',
-        'ms': 'malay',
-        'id': 'indonesian',
-        'bn': 'bengali',
-        'hi': 'hindi'
-      };
-      return languageMap[lang.toLowerCase()] || 'english';
-    }
-    return 'english';
+  const detectLanguage = (text: string): string => {
+    if (!text) return 'english';
+    
+    // Remove unused indonesian regex
+    const detected = lngDetector.detect(text);
+    if (!detected || detected.length === 0) return 'english';
+    
+    const [lang] = detected[0]; // Remove unused confidence
+    return lang.toLowerCase();
   };
 
   const getLanguageConfig = (lang: string) => {
@@ -1621,7 +1337,8 @@ const IslamicAI = () => {
     if (!input.trim() || isLoading) return;
 
     const userLanguage = detectLanguage(input) as SupportedLanguage;
-    const config = getLanguageConfig(userLanguage);
+    // Remove unused config variable
+    // const config = getLanguageConfig(userLanguage);
 
     const userMessage = {
       text: input,
@@ -1632,7 +1349,6 @@ const IslamicAI = () => {
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
-    setError(null);
 
     try {
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -1648,7 +1364,7 @@ const IslamicAI = () => {
           messages: [
             {
               role: 'system',
-              content: getSystemPromptForLanguage(userLanguage, config)
+              content: getSystemPromptForLanguage(userLanguage)
             },
             {
               role: 'user',
@@ -1683,9 +1399,7 @@ const IslamicAI = () => {
       }]);
     } catch (error) {
       console.error('API Error:', error);
-      const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred';
-      setError(errorMessage);
-      
+      // Remove unused errorMessage variable
       const defaultErrorMessage = 'I apologize, but I encountered an error. Please check your API key configuration or try again later.';
       setMessages(prev => [...prev, {
         text: defaultErrorMessage,
@@ -1695,15 +1409,6 @@ const IslamicAI = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const formatTime = () => {
-    const now = new Date();
-    return now.toLocaleTimeString('en-US', { 
-      hour: 'numeric', 
-      minute: 'numeric',
-      hour12: true 
-    });
   };
 
   const renderContent = () => {
