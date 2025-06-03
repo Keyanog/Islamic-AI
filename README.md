@@ -32,7 +32,7 @@
   - Mobile-friendly layout
 
 - 🤖 **Advanced AI Integration**
-  - Powered by Claude-2 via OpenRouter
+  - State-of-the-art language model
   - Intelligent language detection
   - Context-aware responses
   - Natural conversation flow
@@ -54,9 +54,9 @@
    ```bash
    cp .env.example .env
    ```
-   Add your OpenRouter API key to the `.env` file:
+   Add your API key to the `.env` file:
    ```
-   VITE_OPENROUTER_API_KEY=your_api_key_here
+   VITE_API_KEY=your_api_key_here
    ```
 
 4. **Start development server**
@@ -75,7 +75,7 @@
 - **Build Tool**: Vite
 - **Language**: TypeScript
 - **Styling**: Emotion (CSS-in-JS)
-- **AI Integration**: OpenRouter API
+- **AI Integration**: Advanced Language Model
 - **Deployment**: Vercel
 
 ## 🎯 Key Components
@@ -110,7 +110,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- OpenRouter for AI API access
 - React team for the amazing framework
 - Emotion team for the styling solution
 - All contributors and users of the application
