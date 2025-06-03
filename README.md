@@ -1,6 +1,6 @@
 # Islamic AI Assistant
 
-A respectful and knowledgeable AI assistant that provides information about Islam, the Quran, and Hadith using OpenRouter API.
+A respectful and knowledgeable AI assistant that provides information about Islam, the Quran, and Hadith.
 
 ## Features
 
@@ -14,7 +14,7 @@ A respectful and knowledgeable AI assistant that provides information about Isla
 
 - Node.js (v14 or higher)
 - npm or yarn
-- OpenRouter API key
+- API key (check .env.example for configuration)
 
 ## Setup
 
@@ -24,9 +24,9 @@ A respectful and knowledgeable AI assistant that provides information about Isla
 npm install
 ```
 
-3. Create a `.env` file in the root directory and add your OpenRouter API key:
+3. Create a `.env` file in the root directory based on `.env.example`:
 ```
-VITE_OPENROUTER_API_KEY=your_api_key_here
+VITE_API_KEY=your_api_key_here
 ```
 
 4. Start the development server:
@@ -53,7 +53,6 @@ npm run dev
 - TypeScript
 - Vite
 - Emotion (CSS-in-JS)
-- OpenRouter API
 
 ## License
 
